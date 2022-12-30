@@ -11,6 +11,7 @@ typedef struct nd {
 
 } Node ;
 
+/*function to get the predecessor of a node */
 Node* rightMost(Node *root){
     Node* max = root;            /*iterate until find the last rightmost node of the tree starting from the given root*/
     while(  max->right != NULL ){
@@ -23,14 +24,57 @@ Node* rightMost(Node *root){
 int max(int a , int b ){
     return a> b ? a : b ; 
 }
+/*function to get the height of a node */
 int height(Node *root ){
     if ( root == NULL ){
         return 0 ; 
     }
     return 1 + max(height(root->left) , height(root->right));
 }
-
-
+/*using height() function print the height of a node with given key if exists */
+void findheight(Node *root ,  int key ){
+    if ( root == NULL ){
+        return  ;
+    }
+    if ( key < root->data ){
+        findheight(root->left , key );
+    }else if ( key > root->data ){
+        findheight(root->right , key );
+    }else if( key == root->data ){
+        printf("\nheight of Key :%d : %d\n " ,key , height(root));
+        return ; 
+    }else{
+        printf("\n not found \n");
+        return ; 
+    }
+    return ; 
+}
+/*return the balance factor of a node */
+int bal_factor(Node *root ){
+    if( root == NULL ){
+        return 0 ;
+    }
+    return height(root->left) - height(root->right) ; 
+}
+/*usng the function print the balance factor of a node with the given key if exists */
+void print_bal_factor(Node *root  , int key ){
+    if ( root == NULL ){
+        return  ;
+    }
+    if ( key < root->data ){
+        print_bal_factor(root->left , key );
+    }else if ( key > root->data ){
+        print_bal_factor(root->right , key );
+    }else if( key == root->data ){
+        printf("\balance factor of Key  node :%d : %d\n " ,key , bal_factor(root));
+        return ; 
+    }else{
+        printf("\n not found \n");
+        return ; 
+    }
+    return ;
+}
+/*return a newnode with the given key */
 Node* getnewnode(int key ){
 	Node *newnode = (Node*)malloc(sizeof(Node));
 	newnode->data = key ;
@@ -42,13 +86,7 @@ Node* getnewnode(int key ){
 }
 
 
-int bal_factor(Node *root ){
-    if( root == NULL ){
-        return 0 ;
-    }
-    return height(root->left) - height(root->right) ; 
-}
-
+/*LL rotation */
 Node* leftrotate(Node *root ){
     Node *y = root ; 
     Node *x = y->right ; 
@@ -59,7 +97,7 @@ Node* leftrotate(Node *root ){
     y->height = height(y);
     return x ; 
 }
-
+/*RR rotation */
 Node* rightrotate(Node *root ){
     Node *y = root  ; 
     Node *x = y->left ; 
@@ -71,7 +109,7 @@ Node* rightrotate(Node *root ){
 
     return x ; 
 }
-
+/*insert node and balance the whole tree upto the root via recurrsion*/
 Node *insertBSTwith_balance(Node *root ,  int key ){
 
     Node *newnode = getnewnode(key);
@@ -109,16 +147,16 @@ Node *insertBSTwith_balance(Node *root ,  int key ){
 
 
 }
-
-Node* deleteNode(Node *root , int key ){
+/*delete node and balance the whole tree upto the root via recurrsion*/
+Node* deleteNodewith_balance(Node *root , int key ){
     if ( root == NULL ){
         printf("\nnot found\n");
         return NULL;
     }
     if ( root->data  > key ){
-        root->left = deleteNode(root->left, key );
+        root->left = deleteNodewith_balance(root->left, key );
     }else if ( root->data < key ){
-        root->right = deleteNode(root->right, key );
+        root->right = deleteNodewith_balance(root->right, key );
     }else{
         if ( root->left == NULL ){
             Node *temp = root->right;
@@ -132,13 +170,13 @@ Node* deleteNode(Node *root , int key ){
         }
         Node *nt =  rightMost(root->left);
         root->data = nt->data ; 
-        root->left = deleteNode(root->left , nt->data);
+        root->left = deleteNodewith_balance(root->left , nt->data);
     }
 
     root->height = height(root);
 
     int balance = bal_factor(root);
-    if ( balance > 1 && bal_factor(root->left)>= 0  ){
+    if ( balance > 1 && bal_factor(root->left) >= 0  ){
         return rightrotate(root); 
     }
     if ( balance < -1 && bal_factor(root->right) <= 0  ){
@@ -154,7 +192,7 @@ Node* deleteNode(Node *root , int key ){
     }
     return root ; 
 }
-
+/*print the inorder traversal */
 void  inorder(Node *root ){
 	if ( root == NULL ){
 		return  ;
@@ -165,47 +203,39 @@ void  inorder(Node *root ){
 
 }
 
-void preorder(Node *root ){
-    if ( root == NULL ){
-        return ; 
-    }
-    printf("%d,",root->data);
-    preorder(root->left);
-    
-    preorder(root->right);
-
-}
-
 int main(){
-    int n = 6 ; 
     Node *root = NULL ; 
-    // for (int i = 0 ; i < n ;i++ ){
-    //     int m = rand()% 59 ;
-    //     printf("%d,",m);
-    //     root = insertBSTwith_balance(root, m);
+    int exit = 0 ; 
+    while( !exit ){
+        printf("\n1) Insert a node in AVL tree\n2) Delete a node in AVL tree\n3) Display the AVL tree by inorder traversal \n4) Report the height of any node in AVL tree\n5) Report the balance factor of any node in AVL tree\n6) exit \n");
+        int count  , key ; 
+        scanf("%d",&count);
+        switch (count ){
+            case 1 : printf("\nenter no to insert : \n"); 
+                    scanf("%d" , &key ); 
+                    root = insertBSTwith_balance(root , key );
+                    break ; 
+            case 2 :printf("\nenter no to delete : \n");
+                    scanf("%d" , &key ); 
+                    root = deleteNodewith_balance(root , key );
+                    break ;  
+            case 3 : printf("\ninorder traversal : \n");
+                    inorder(root);
+                    break ; 
+            case 4 : printf("\nheight of a node enter node value : \n");
+                    scanf("%d" , &key );
+                    findheight(root , key );
+                    break ; 
+            case 5 : printf("\nbalance factor of a node enter node value : \n");
+                    scanf("%d" , &key );
+                    print_bal_factor(root , key );
+                    break ; 
 
-    // }
-    root = insertBSTwith_balance(root, 9);
-    root = insertBSTwith_balance(root, 5);
-    root = insertBSTwith_balance(root, 10);
-    root = insertBSTwith_balance(root, 0);
-    root = insertBSTwith_balance(root, 6);
-    root = insertBSTwith_balance(root, 11);
-    root = insertBSTwith_balance(root, -1);
-    root = insertBSTwith_balance(root, 1);
-    root = insertBSTwith_balance(root, 2);
-    printf("\n");
-    inorder(root);
-    printf("\n");
-    preorder(root);
-    root = deleteNode(root , 10);
+            case 6 : exit = 1 ; 
+                    break ; 
+        }
+    };
 
-
-    printf("\n");
-    inorder(root);
-    printf("\n");
-    preorder(root);
-    
     
     
     return 0 ; 
