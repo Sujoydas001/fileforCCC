@@ -9,7 +9,7 @@ UNTIL REACH A CONDITION FOR EMPTY ARRAY */
 
 
 typedef struct nd{
-    int val ; 
+    char val ; 
     struct nd *lch ; 
     struct nd *rch ; 
 } node ; 

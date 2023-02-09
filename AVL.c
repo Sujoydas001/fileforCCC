@@ -176,10 +176,10 @@ Node* deleteNodewith_balance(Node *root , int key ){
     root->height = height(root);
 
     int balance = bal_factor(root);
-    if ( balance > 1 && bal_factor(root->left) >= 0  ){
+    if ( balance > 1 && bal_factor(root->left) > 0  ){
         return rightrotate(root); 
     }
-    if ( balance < -1 && bal_factor(root->right) <= 0  ){
+    if ( balance < -1 && bal_factor(root->left) < 0  ){
         return leftrotate(root); 
     }
     if ( balance > 1 && bal_factor(root->right) < 0 ){
