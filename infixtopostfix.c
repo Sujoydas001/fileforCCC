@@ -26,7 +26,7 @@ int main(){
     int j = 0 ; 
     int count =  0 ; 
     while( str[i] != '\0'){
-        printstack(); 
+        // printstack(); 
         if ( prec(str[i]) == -1 ){
             res[j++] = str[i] ; 
         }
