@@ -111,6 +111,90 @@ int main(){
         printf("/ %d %d %d \n" , job.pid , job.a_time , job.b_time ) ;
     }
 
+    // int start = 1 ; 
+    // int time = 0 ; 
+    // int get ; 
+    // int i = 0 ; 
+    // process *prev = NULL ; 
+    // int prempt_seperation ; 
+    // do{
+    //     prempt_seperation = 0 ; 
+    //     for( int j = 0 ; j < n ; j++ ){
+    //         process job = pq->holder[j] ; 
+    //         // printf("/ %d %d %d \n" , job.pid , job.a_time , job.b_time ) ;
+    //         if( job.a_time == i  ) {
+    //             process *c = &job ; 
+                 
+    //             insert(pq,c ) ; 
+    //         }
+    //     }
+    //     time = i  ; 
+    //     printf("time :%d " , time  ) ; 
+    //     printHeap(pq) ; 
+    //     printf("\n") ; 
+    //     if( time == 0 ){
+    //         printf("time : %d : process %d starts \n" ,time, pq->heap[0].pid  ) ; 
+    //     }
+        
+    //     process c = extractMin(pq);
+    //     process *curr = &c;
+    //     curr_id = curr->pid ; 
+    //     int b_time_ref_prempt= -1 ; 
+    //     for( int j = 0 ; j < n ; j++ ){
+    //         if( prev_id == pq->holder[j].pid  ) {
+    //             b_time_ref_prempt = pq->holder[j].b_time ; 
+    //         }
+    //     }
+    //     int remaining_one  = -1 ; 
+    //     if(( curr_id != prev_id ) &&( b_time_ref_prempt != 0 ) && ( prev_id != -1 )){
+    //         // printf("time : %d : process %d prempts( remianing time = %d ) process %d starts \n" ,time, prev_id , b_time_ref_prempt  ,  curr_id  ) ; 
+           
+    //         for( int j = 0 ; j < n ; j++ ){
+    //             if( curr_id == pq->holder[j].pid  ) {
+    //                 remaining_one = pq->holder[j].b_time ; 
+    //             }
+    //         }
+
+    //         prempt_seperation = 1 ; 
+    //     }
+        
+    //     prev_id = curr_id ; 
+    //     curr->b_time-- ;
+    //     int pid_ref = curr->pid ; 
+    //     int flag = 0 ; 
+    //     for( int j = 0 ; j < n  && flag == 0 ; j++ ){
+    //         if( pid_ref == pq->holder[j].pid ) {
+    //             pq->holder[j].b_time-- ; 
+    //             flag = 1 ; 
+    //         }
+    //     }
+        
+    //     // printf("time %d : running process %d\n",time  ,curr->pid ) ; 
+        
+    //     if( curr->b_time != 0 ){
+    //         insert(pq,curr); 
+    //     }else{
+    //         if( time != 0  ){
+    //             if(pq->size == 0  ){
+    //                 printf("time : %d : process %d ends . \n" ,time, curr->pid ) ; 
+    //             }else{
+    //                 printf("time : %d : process %d ends process %d starts \n" ,time, prev->pid , curr->pid ) ; 
+    //             }
+    //         }
+    //     }
+            
+            
+    //     prev = curr ; 
+    //     // printf("going to next \n") ; 
+    //     i++ ;  
+    //     // scanf("%d", &get) ;
+
+        
+    // }while(pq->size != 0 ); 
+
+
+
+
     int start = 1 ; 
     int time = 0 ; 
     int get ; 
@@ -147,18 +231,19 @@ int main(){
         }
         int remaining_one  = -1 ; 
         if(( curr_id != prev_id ) &&( b_time_ref_prempt != 0 ) && ( prev_id != -1 )){
-            // printf("time : %d : process %d prempts( remianing time = %d ) process %d starts \n" ,time, prev_id , b_time_ref_prempt  ,  curr_id  ) ; 
+            printf("time : %d : process %d prempts( remianing time = %d ) process %d starts \n" ,time, prev_id , b_time_ref_prempt  ,  curr_id  ) ; 
            
-            for( int j = 0 ; j < n ; j++ ){
-                if( curr_id == pq->holder[j].pid  ) {
-                    remaining_one = pq->holder[j].b_time ; 
-                }
-            }
+            // for( int j = 0 ; j < n ; j++ ){
+            //     if( curr_id == pq->holder[j].pid  ) {
+            //         remaining_one = pq->holder[j].b_time ; 
+            //     }
+            // }
+            // remaining_one = curr->b_time ; 
 
             prempt_seperation = 1 ; 
         }
         
-        prev_id = curr_id ; 
+        
         curr->b_time-- ;
         int pid_ref = curr->pid ; 
         int flag = 0 ; 
@@ -178,33 +263,25 @@ int main(){
                 if(pq->size == 0  ){
                     printf("time : %d : process %d ends . \n" ,time, curr->pid ) ; 
                 }else{
-                    printf("time : %d : process %d ends process %d starts \n" ,time, prev->pid , curr->pid ) ; 
+                    if( (prempt_seperation == 0 ) && ( prev->pid != curr->pid  ))  {
+                        printf("time : %d : process %d ends process %d starts \n" ,time, prev->pid , curr->pid ) ; 
+                    }
+                    
                 }
             }
         }
             
             
         prev = curr ; 
-        // printf("going to next \n") ; 
+        prev_id = curr_id ; 
+        printf("going to next \n") ; 
         i++ ;  
-        // scanf("%d", &get) ;
+        scanf("%d", &get) ;
 
         
     }while(pq->size != 0 ); 
 
 
-    // int i = 0 ;
-    // int time = 0 ; 
-    // printf("time %d :process %d start\n" ,time , pq->heap[0]  ) ; 
-    // while( !isLast(pq)){
-    //     process curr = extractMin(pq) ; 
-    //     process next = pq->heap[0] ; 
-    //     time += curr.b_time ; 
-    //     printf("time %d :process %d end , process %d start\n" ,time ,  curr.pid , next.pid ) ; 
-          
-    // }
-    // time+= pq->heap[0].b_time ; 
-    // printf("time %d :process %d start\n" ,time , pq->heap[0].pid ) ; 
 
 
 
@@ -219,21 +296,20 @@ int main(){
 /*
 
 
-
-for ( i 0 , < holder.length ){
-    a_time_ref = i 
+do{
+    time = i 
     for ( ){   iterate over all jobs in holder array 
-        insert in ready queue if a_time of job is i ;  ( readyQueue ( priority as b_time ))
+        insert in ready queue if time of job is i ;  ( readyQueue ( priority as b_time ))
     }
+
     a = extract min 
-    
-    time +=  i ; 
-    run a  == === a.b_time-- ; 
-    print( running process a.pid )
+    prev process ends a start 
+    run a  == === a.b_time-- ;
+     
 
 
     
-}
+}while( size > 0 ) ; 
 
 
 */
